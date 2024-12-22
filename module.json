@@ -1,0 +1,22 @@
+{
+  "id": "token-zy",
+  "title": "Token-zy",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "authors": [
+    {
+      "name": "Evgen",
+      "flags": {}
+    }
+  ],
+    "esmodules": [
+		"scripts/libwrapper_shim.js",
+        "scripts/main.js"
+    ],
+    "url": "https://github.com/LooseSlives/token-zy",
+    "manifest": "https://github.com/LooseSlives/token-zy/releases/latest/download/module.json",
+    "download": "https://github.com/LooseSlives/token-zy/releases/download/1.0.0/module.zip",
+}
