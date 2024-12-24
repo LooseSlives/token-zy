@@ -9,7 +9,11 @@ Object.defineProperty(TokenDocument.prototype, "sort", {
     get: function () {
         if (!(this instanceof TokenDocument))
             return 0;
+
         const z = this.getFlag("token-zy", "zIndexOverride") || 0;
+        if (z != 0)
+            return z;
+
         const isNotDefeated = this.actor?.statuses?.has(CONFIG.specialStatusEffects.DEFEATED) ? 0 : 1;
         return isNotDefeated * this.y + z;
     },
@@ -37,6 +41,18 @@ Hooks.once("setup", () => {
     });
 });
 
+Hooks.once("setup", () => {
+    game.keybindings.register("token-zy", "mirror-back-key", {
+        name: "Mirror token",
+        hint: "When your mouse is hovered over a token press this key to mirror it horizontally",
+        editable: [{
+                key: 'KeyX'
+            }
+        ],
+        restricted: false,
+        onDown: mirrorToken
+    });
+});
 Hooks.on("refreshToken", (token) => {
     canvas.tokens.objects.sortDirty = canvas.primary.sortDirty = true;
 });
@@ -57,5 +73,19 @@ function pushTokenBack(event) {
         zPush -= 1;
         hoveredToken.document.setFlag("token-zy", "zIndexOverride", zPush);
         canvas.tokens.placeables.forEach(t => t.refresh());
+    }
+}
+
+function mirrorToken(event) {
+    const hoveredToken = canvas.tokens.hover;
+    if (hoveredToken && !event.repeat) {
+        hoveredToken.document.update({
+            "texture.scaleX": hoveredToken.document.texture.scaleX * -1
+        }, {
+            animate: false,
+            animation: {
+                duration: 1
+            }
+        });
     }
 }
